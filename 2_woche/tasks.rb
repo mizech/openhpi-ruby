@@ -68,6 +68,20 @@ class TaskList
 end
 
 if ARGV[0] == "list"
-    puts "list"  
+    list = TaskList.new 
+    list.load("tasks.txt")
+
+    puts "#{list} Aufgaben im System"
+    puts "4 offen, 3 erledigt"
+
+    list.each { |task| 
+        prefix = "OFFEN"
+
+        if task.completed? == true
+            prefix = "ERLEDIGT"
+        end 
+
+        puts "#{prefix}: #{task.text}" 
+    }
 end
 
