@@ -70,18 +70,28 @@ end
 if ARGV[0] == "list"
     list = TaskList.new 
     list.load("tasks.txt")
-
-    puts "#{list} Aufgaben im System"
-    puts "4 offen, 3 erledigt"
+    total = 0
+    open = 0
+    completed = 0
+    statements = []
 
     list.each { |task| 
+        total = total + 1
         prefix = "OFFEN"
 
-        if task.completed? == true
+        if (task.completed?).class == Time
             prefix = "ERLEDIGT"
+            completed = completed + 1
+        else 
+            open = open + 1
         end 
 
-        puts "#{prefix}: #{task.text}" 
+        statements << "#{prefix}: #{task.text}" 
     }
+
+    puts "#{total} Aufgaben im System"
+    puts "#{open} offen, #{completed} erledigt"
+
+    puts statements.sort.reverse
 end
 
