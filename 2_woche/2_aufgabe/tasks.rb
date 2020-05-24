@@ -54,6 +54,18 @@ class TaskList
     end
   end
 
+  def write(filename, list)
+    i = 0
+
+    file = File.open(filename, "w")
+
+    list.each do |line|
+      file.puts line
+    end
+
+    file.close
+  end
+
   include Enumerable
 
   def each
@@ -68,9 +80,7 @@ end
 
 if ARGV[0] == "done"
   text = ARGV[1]
-  total = 0
   open = 0
-  completed = 0
   statements = []
 
   list = TaskList.new 
@@ -80,25 +90,17 @@ if ARGV[0] == "done"
     if text == task.text
       task.complete!
     end
-  }
 
-  list.each { |task| 
-    total = total + 1
-    prefix = "OFFEN"
-
-    if (task.completed?).class == Time
-        prefix = "ERLEDIGT"
-        completed = completed + 1
-    else 
+    if (task.completed?).class != Time
         open = open + 1
     end 
 
     statements << "#{task.text},#{task.start_time},#{task.end_time}" 
   }
 
-  puts "#{text} erledigt. Noch #{open} Aufgaben offen."
-  # puts "#{open} offen, #{completed} erledigt"
+  list = TaskList.new 
+  list.write("tasks.txt", statements)
 
-  # puts statements.sort.reverse
+  puts "#{text} erledigt. Noch #{open} Aufgaben offen."
 end
 
