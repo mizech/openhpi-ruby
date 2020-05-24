@@ -82,13 +82,15 @@ if ARGV[0] == "done"
   text = ARGV[1]
   open = 0
   statements = []
+  action_done = false
 
   list = TaskList.new 
   list.load("tasks.txt")
 
   list.each { |task| 
-    if text == task.text
+    if text == task.text && (task.completed?).class != Time
       task.complete!
+      action_done = true
     end
 
     if (task.completed?).class != Time
@@ -101,6 +103,10 @@ if ARGV[0] == "done"
   list = TaskList.new 
   list.write("tasks.txt", statements)
 
-  puts "#{text} erledigt. Noch #{open} Aufgaben offen."
+  if action_done == true
+    puts "#{text} erledigt. Noch #{open} Aufgaben offen."
+  else 
+    puts "Nichts zu erledigen."
+  end
 end
 
