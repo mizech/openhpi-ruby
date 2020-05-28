@@ -12,3 +12,4 @@ class MyClass
   
   # MyClass.new.geheimnis # => "very secret"
   MyClass.new
+  
